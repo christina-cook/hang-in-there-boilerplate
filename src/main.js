@@ -137,7 +137,7 @@ showSavedButton.addEventListener('click', openSavedPosters);
 showMainButton.addEventListener('click', showMainPoster);
 backToMainButton.addEventListener('click', showMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
-saveThisPosterButton.addEventListener('click', saveThisPoster);
+saveThisPosterButton.addEventListener('click', saveCurrentPoster);
 
 // showMyPosterButton.addEventListener('click', () => {
 //   storeNewPoster();
@@ -184,7 +184,7 @@ function storeCustomPoster() {
 }
 
 function showMyPoster() {
-  var newPoster = storeCustomPoster();
+  var customPoster = storeCustomPoster();
   title.innerText = newPoster.title;
   image.src = newPoster.imageURL;
   quote.innerText = newPoster.quote;
@@ -192,13 +192,14 @@ function showMyPoster() {
   posterForm.style.display = "none";
 }
 
-function saveCustomPoster() {
-  savedPosters.push(storeCustomPoster());
+function saveCurrentPoster() {
+  var currentPoster = new Poster(image.src,title.innertext, quote.innertext)
+  savedPosters.push(currentPoster);
   savedPostersGrid.innerHTML += `
   <section class=mini-poster>
-    <img class="poster-img" src="${storeCustomPoster().imageURL}">
-    <h1 class="poster-title">${storeCustomPoster().title}</h1>
-    <h3 class="poster-quote">${storeCustomPoster().quote}</h3>
+    <img class="poster-img" src="${currentPoster.imageURL}">
+    <h1 class="poster-title">${currentPoster.title}</h1>
+    <h3 class="poster-quote">${currentPoster.quote}</h3>
   </section>
   `
 }
