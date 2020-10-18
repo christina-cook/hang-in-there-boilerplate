@@ -192,8 +192,9 @@ function showMyPoster() {
   mainPoster.style.display = "block";
   posterForm.style.display = "none";
 }
+
 function testForDuplicate(arrayOfPosters, mainPoster) {
-  for(var i = 0; i < arrayOfPosters.length; i++) {
+  for (var i = 0; i < arrayOfPosters.length; i++) {
     if (arrayOfPosters[i].imageURL === mainPoster.imageURL &&
         arrayOfPosters[i].title === mainPoster.title &&
         arrayOfPosters[i].quote === mainPoster.quote) {
@@ -205,13 +206,42 @@ function testForDuplicate(arrayOfPosters, mainPoster) {
 function saveMainPoster() {
   var mainPoster = new Poster(image.src, title.innerText, quote.innerText);
   if(!testForDuplicate(savedPosters, mainPoster)) {
-  savedPosters.push(mainPoster);
-  savedPostersGrid.innerHTML += `
-  <section class=mini-poster>
-    <img class="poster-img" src="${mainPoster.imageURL}">
-    <h1 class="poster-title">${mainPoster.title}</h1>
-    <h3 class="poster-quote">${mainPoster.quote}</h3>
-  </section>
-  `
+  savedPosters.unshift(mainPoster);
+  displaySavedPosters();
+  var allMiniPosters = document.querySelectorAll('.mini-poster')
+  for (var i = 0; i < allMiniPosters.length; i++) {
+    // struggling to figure out event listener syntax: how do we add an argument to the event handler?
+    allMiniPosters[i].addEventListener('dblclick', function() {
+      savedPosters.splice(i, 1)
+      displaySavedPosters()
+    })
+  }
   }
 }
+
+function displaySavedPosters() {
+  var html = "";
+  for (var i = 0; i < savedPosters.length; i++) {
+    html +=
+    `
+    <section class=mini-poster id=${savedPosters[i].id}>
+      <img class="poster-img" src="${savedPosters[i].imageURL}">
+      <h1 class="poster-title">${savedPosters[i].title}</h1>
+      <h3 class="poster-quote">${savedPosters[i].quote}</h3>
+    </section>
+  `
+  }
+  savedPostersGrid.innerHTML = html;
+}
+
+
+// function deleteSavedPoster() {
+//   // for loop
+//   //savedPosters.splice(index, 1)
+//   displaySavedPosters();
+//   console.log("delete")
+//}
+
+// var miniPoster = document.querySelector('#' + mainPoster.id)
+// miniPoster.addEventListener('dblclick', deleteSavedPoster(miniPoster));
+// console.log(miniPoster)
