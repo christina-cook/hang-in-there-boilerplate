@@ -180,7 +180,11 @@ function saveCurrentPoster() {
   }
 }
 
-function deleteSavedPoster() {}
+function deleteSavedPoster(miniPoster, index) {
+  savedPoster.splice(savedPosters[index]);
+  minPoster.remove;
+  updateSavedPostersGrid();
+}
 
 
 //~~~~~~~~~~~~~~~~~~~FUNCTIONS CALLED INSIDE EVENT HANDLERS 👇~~~~~~~~~~~~~~~~~~~~~~~
@@ -287,6 +291,10 @@ for (var i = 0; i < savedPosters.length; i++) {
     <h3 class="poster-quote">${savedPoster.quote}</h3>
   </section>
 `
+array.push(document.querySelector('#' + savedPoster.id))
+array[i].addEventListener('dblclick', function(){
+  deleteSavedPoster(array[i], i)
+})
   }
 }
 
