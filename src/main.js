@@ -176,14 +176,16 @@ function saveCurrentPoster() {
   var newPoster = new Poster(currentPoster.imageURL, currentPoster.title, currentPoster.quote);
   if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
   savedPosters.push(newPoster);
-  updateSavedPostersGrid();
+  addMiniPostersToGrid();
+  identifyMiniPosters();
   }
 }
 
 function deleteSavedPoster(miniPoster, index) {
   savedPoster.splice(savedPosters[index]);
   minPoster.remove;
-  updateSavedPostersGrid();
+  addMiniPostersToGrid();
+  identifyMiniPosters();
 }
 
 
@@ -264,23 +266,12 @@ function testIfPostersMatch(posterOne, posterTwo) {
     posterOne.quote === posterTwo.quote
   }
 
-//displays saved posters as miniature posters in grid
-//function updates based on data model stored in savedPosters array
-//called in helper handler for saveThisPosterButton and
-//in handlers for each mini-poster in the savedPostersGrid
-function updateSavedPostersGrid() {
-  var savedPostersGrid = document.querySelector('.saved-posters-grid')
-  var miniPosters = [];
-  var insideSavedPostersGrid = "";
-  addMiniPosters(insideSavedPostersGrid, miniPosters)
-  savedPostersGrid.innerHTML = insideSavedPostersGrid;
-}
 
-//loops through savedPosters array and adds mini-poster html section for each object
-//saves each mini-poster section as new element in array
-//adds event listener for the mini-poster with anonymous function to insulate
-//deleteSavedPoster handler
-function addMiniPosters(html, array) {
+//loops through savedPosters array and adds mini-poster element to savedPostersGrid
+//for each element in the array
+function addMiniPostersToGrid(html) {
+  var savedPostersGrid = document.querySelector('.saved-posters-grid')
+var html = "";
 for (var i = 0; i < savedPosters.length; i++) {
   var savedPoster = savedPosters[i];
   html +=
@@ -291,12 +282,24 @@ for (var i = 0; i < savedPosters.length; i++) {
     <h3 class="poster-quote">${savedPoster.quote}</h3>
   </section>
 `
-array.push(document.querySelector('#' + savedPoster.id))
-array[i].addEventListener('dblclick', function(){
-  deleteSavedPoster(array[i], i)
-})
   }
+ savedPostersGrid.innerHTML = html;
 }
+
+//saves each mini-poster section as new element in array
+//adds event listener for the mini-poster with anonymous function to insulate
+//deleteSavedPoster handler
+function identifyMiniPosters() {
+  var miniPosters = [];
+  for (var i = 0; i < savedPosters.length; i++) {
+    var savedPoster = savedPosters[i];
+    miniPosters.push(document.querySelector('#' + savedPoster.id));
+    miniPosters[i].addEventListener('dblclick', function() {
+      deleteSavedPoster(miniPosters[i], i)
+        }
+      )
+    }
+  }
 
 //~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~~
 
