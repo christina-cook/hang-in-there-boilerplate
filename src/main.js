@@ -240,6 +240,7 @@ function savePropertiesForFutureRandomPosters() {
 //shows the former and hides the latter
 //called in helper handlers for
 //showFormButton, showSavedButton, showMainButton, and backToMainButton
+//**may want to toggle "hidden" class instead***
 function switchPages(pageToOpen, pageToHideOne, pageToHideTwo) {
   pageToOpen.style.display = "block";
   pageToHideOne.style.display = "none";
@@ -289,17 +290,17 @@ for (var i = 0; i < savedPosters.length; i++) {
 //saves each mini-poster section as new element in array
 //adds event listener for the mini-poster with anonymous function to insulate
 //deleteSavedPoster handler
-function identifyMiniPosters() {
+function addDeleteFunctionalityToMiniPosters() {
   var miniPosters = [];
   for (var i = 0; i < savedPosters.length; i++) {
     var savedPoster = savedPosters[i];
     miniPosters.push(document.querySelector('#miniposter' + savedPoster.id));
-    miniPosters[i].addEventListener('dblclick', function() {
-      deleteSavedPoster(miniPosters[i], i)
-        }
-      )
-    }
+    var miniPoster = miniPosters[i];
+    miniPoster.addEventListener('dblclick', function() {
+      deleteSavedPoster(miniPoster, i)
+    })
   }
+}
 
 //~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~~
 
