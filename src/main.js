@@ -216,9 +216,9 @@ function getRandomIndex(array) {
 //with custom inputs from form
 //called inside helper handler for showMyPosterButton
 function storeCustomPosterAsCurrentPoster() {
-  var inputImage = document.querySelector('#poster-image-url')
-  var inputTitle = document.querySelector('#poster-title')
-  var inputQuote = document.querySelector('#poster-quote')
+  var inputImage = document.querySelector('#poster-image-url').value
+  var inputTitle = document.querySelector('#poster-title').value
+  var inputQuote = document.querySelector('#poster-quote').value
   currentPoster.imageURL = inputImage;
   currentPoster.title = inputTitle;
   currentPoster.quote = inputQuote;
