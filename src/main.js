@@ -182,8 +182,8 @@ function saveCurrentPoster() {
 }
 
 function deleteSavedPoster(miniPoster, index) {
-  savedPoster.splice(savedPosters[index]);
-  minPoster.remove;
+  savedPosters.splice(savedPosters[index]);
+  miniPoster.remove;
   addMiniPostersToGrid();
   identifyMiniPosters();
 }
@@ -276,7 +276,7 @@ for (var i = 0; i < savedPosters.length; i++) {
   var savedPoster = savedPosters[i];
   html +=
   `
-  <section class=mini-poster id=${savedPoster.id}>
+  <section class=mini-poster id=miniposter${savedPoster.id}>
     <img class="poster-img" src="${savedPoster.imageURL}">
     <h1 class="poster-title">${savedPoster.title}</h1>
     <h3 class="poster-quote">${savedPoster.quote}</h3>
@@ -293,7 +293,7 @@ function identifyMiniPosters() {
   var miniPosters = [];
   for (var i = 0; i < savedPosters.length; i++) {
     var savedPoster = savedPosters[i];
-    miniPosters.push(document.querySelector('#' + savedPoster.id));
+    miniPosters.push(document.querySelector('#miniposter' + savedPoster.id));
     miniPosters[i].addEventListener('dblclick', function() {
       deleteSavedPoster(miniPosters[i], i)
         }
