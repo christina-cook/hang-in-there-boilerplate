@@ -1,16 +1,21 @@
-// query selector variables go here 👇
-//poster attributes
+//~~~~~~~~~~~~~~~~~~~~~~~~QUERY SELECTOR VARIABLES 👇~~~~~~~~~~~~~~~~~~~~~~~~
+
+  //poster attributes
 var title = document.querySelector('.poster-title')
 var quote = document.querySelector('.poster-quote')
 var image = document.querySelector('img')
 
-//pages
+//should the rest of these variables (pages and buttons) be global, or
+//should they be defined within the event handlers/within an object or class?
+//How do we minimize global variables when these variables need to be defined prior to
+//adding event listeners, and even listeners can't be added from within their own handlers?
+
+  //pages
 var posterForm = document.querySelector('.poster-form')
 var savedPostersPage = document.querySelector('.saved-posters')
-var savedPostersGrid = document.querySelector('.saved-posters-grid')
 var mainPoster = document.querySelector('.main-poster')
 
-//buttons
+  //buttons
 var showFormButton = document.querySelector('.show-form')
 var showSavedButton = document.querySelector('.show-saved')
 var showMainButton = document.querySelector('.show-main')
@@ -19,13 +24,9 @@ var showMyPosterButton = document.querySelector('.make-poster')
 var saveThisPosterButton = document.querySelector('.save-poster')
 var showAnotherRandomPosterButton = document.querySelector('.show-random')
 
-//inputs
-var inputImage = document.querySelector('#poster-image-url')
-var inputTitle = document.querySelector('#poster-title')
-var inputQuote = document.querySelector('#poster-quote')
 
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DATA 👇~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// we've provided you with some data to work with 👇
 var images = [
   "./assets/bees.jpg",
   "./assets/bridge.jpg",
@@ -123,95 +124,189 @@ var quotes = [
   "Each person must live their life as a model for others.",
   "A champion is defined not by their wins but by how they can recover when they fall."
 ];
+
 var savedPosters = [];
+
 var currentPoster = {};
 
-savedPostersPage.style.display = "none"
-posterForm.style.display = "none"
+//~~~~~~~~~~~~~~~~~~~~~~~~~~EVENT LISTENERS👇~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-// event listeners go here 👇
-showAnotherRandomPosterButton.addEventListener('click', generateRandomPoster);
+showAnotherRandomPosterButton.addEventListener('click', showAnotherRandomPoster);
 showFormButton.addEventListener('click', openForm);
 showSavedButton.addEventListener('click', openSavedPosters);
-showMainButton.addEventListener('click', showMainPoster);
-backToMainButton.addEventListener('click', showMainPoster);
+showMainButton.addEventListener('click', openMainPoster);
+backToMainButton.addEventListener('click', openMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
-saveThisPosterButton.addEventListener('click', saveMainPoster);
+saveThisPosterButton.addEventListener('click', saveCurrentPoster);
 
 
-// showMyPosterButton.addEventListener('click', () => {
-//   storeNewPoster();
-//   showMyPoster();
-// })
+//~~~~~~~~~~~~~~~~~~~EVENT HANDLERS/HELPERS 👇~~~~~~~~~~~~~~~~~~~~~
+
+//handler for showAnotherRandomPosterButton
+function showAnotherRandomPoster() {
+  randomizePropertiesOfCurrentPoster();
+  displayCurrentPoster();
+}
+
+//hander for showMyPosterButton
+function showMyPoster() {
+  storeCustomPosterAsCurrentPoster();
+  savePropertiesForFutureRandomPosters();
+  openMainPoster();
+  displayCurrentPoster();
+}
+
+//handler for showFormButton
+function openForm() {
+  switchPages(posterForm, mainPoster, savedPostersPage);
+}
+
+//handler for showSavedButton
+function openSavedPosters() {
+  switchPages(savedPostersPage, mainPoster, posterForm);
+}
+
+//handler for showMainButton and backToMainButton
+function openMainPoster() {
+  switchPages(mainPoster, savedPostersPage, posterForm)
+}
+
+//handler for saveThisPosterButton
+function saveCurrentPoster() {
+  var newPoster = new Poster(currentPoster.imageURL, currentPoster.title, currentPoster.quote);
+  if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
+  savedPosters.push(newPoster);
+  addMiniPostersToGrid();
+  identifyMiniPosters();
+  }
+}
+
+function deleteSavedPoster(miniPoster, index) {
+  savedPosters.splice(savedPosters[index]);
+  miniPoster.remove;
+  addMiniPostersToGrid();
+  identifyMiniPosters();
+}
 
 
-// functions and event handlers go here 👇
-// (we've provided one for you to get you started)!
+//~~~~~~~~~~~~~~~~~~~FUNCTIONS CALLED INSIDE EVENT HANDLERS 👇~~~~~~~~~~~~~~~~~~~~~~~
+
+//updates HTML for mainPoster based on data model stored in currentPoster
+//called in helper handlers for showAnotherRandomPosterButton and showMyPosterButton
+function displayCurrentPoster() {
+  title.innerText = currentPoster.title;
+  quote.innerText = currentPoster.quote;
+  image.src = currentPoster.imageURL;
+}
+
+//updates data model, as stored in currentPoster object,
+//with randomly selected values from images, titles, and quotes arrays
+//called in helper handler for showAnotherRandomPosterButton
+function randomizePropertiesOfCurrentPoster() {
+  currentPoster.imageURL = images[getRandomIndex(images)];
+  currentPoster.title = titles[getRandomIndex(titles)];
+  currentPoster.quote = quotes[getRandomIndex(quotes)];
+}
+
+//gets random index
+//called in randomizePropertiesOfCurrentPoster() to choose random image, title, and quote
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
 
-
-function generateRandomPoster() {
-  title.innerText = titles[getRandomIndex(titles)];
-  quote.innerText = quotes[getRandomIndex(quotes)];
-  image.src = images[getRandomIndex(images)];
+//updates data model, as stored in currentPoster object,
+//with custom inputs from form
+//called inside helper handler for showMyPosterButton
+function storeCustomPosterAsCurrentPoster() {
+  var inputImage = document.querySelector('#poster-image-url').value
+  var inputTitle = document.querySelector('#poster-title').value
+  var inputQuote = document.querySelector('#poster-quote').value
+  currentPoster.imageURL = inputImage;
+  currentPoster.title = inputTitle;
+  currentPoster.quote = inputQuote;
 }
 
-generateRandomPoster()
-
-function openForm() {
-  posterForm.style.display = "block"
-  mainPoster.style.display = "none"
+//saves currentPoster properties to titles, quotes, and images arrays
+//to be used as values in future random posters
+//called inside helper handler for showMyPosterButton
+function savePropertiesForFutureRandomPosters() {
+  images.push(currentPoster.imageURL);
+  titles.push(currentPoster.title);
+  quotes.push(currentPoster.quote);
 }
 
-function openSavedPosters() {
-  savedPostersPage.style.display = "block"
-  mainPoster.style.display = "none"
+
+//takes destination and starting page as arguments
+//shows the former and hides the latter
+//called in helper handlers for
+//showFormButton, showSavedButton, showMainButton, and backToMainButton
+//**may want to toggle "hidden" class instead***
+function switchPages(pageToOpen, pageToHideOne, pageToHideTwo) {
+  pageToOpen.style.display = "block";
+  pageToHideOne.style.display = "none";
+  pageToHideTwo.style.display = "none";
 }
 
-function showMainPoster() {
-  mainPoster.style.display = "block"
-  posterForm.style.display = "none"
-  savedPostersPage.style.display = "none"
-}
-
-function storeCustomPoster() {
-  images.push(inputImage.value);
-  titles.push(inputTitle.value);
-  quotes.push(inputQuote.value);
-  return new Poster(inputImage.value, inputTitle.value, inputQuote.value);
-}
-
-function showMyPoster() {
-  var newPoster = storeCustomPoster();
-  title.innerText = newPoster.title;
-  image.src = newPoster.imageURL;
-  quote.innerText = newPoster.quote;
-  mainPoster.style.display = "block";
-  posterForm.style.display = "none";
-}
-function testForDuplicate(arrayOfPosters, mainPoster) {
+//compares poster to every poster in array and returns true if there is a match
+//called in helper handler for saveThisPosterButton,
+//which only saves a poster to data model (savePosters array) and savedPostersGrid
+//if the poster is not a duplicate of previously saved poster
+function testIfAnyPosterIsAMatch(arrayOfPosters, mainPoster) {
   for(var i = 0; i < arrayOfPosters.length; i++) {
-    if (arrayOfPosters[i].imageURL === mainPoster.imageURL &&
-        arrayOfPosters[i].title === mainPoster.title &&
-        arrayOfPosters[i].quote === mainPoster.quote) {
+    if (testIfPostersMatch(arrayOfPosters[i], mainPoster)) {
           return true;
         }
+      }
+    }
+
+//compares two posters and returns true if they share all values
+//called in testIfAnyPosterIsAMatch() for each item in arrayOfPosters
+function testIfPostersMatch(posterOne, posterTwo) {
+    return posterOne.imageURL === posterTwo.imageURL &&
+    posterOne.title === posterTwo.title &&
+    posterOne.quote === posterTwo.quote
+  }
+
+
+//loops through savedPosters array and adds mini-poster element to savedPostersGrid
+//for each element in the array
+function addMiniPostersToGrid(html) {
+  var savedPostersGrid = document.querySelector('.saved-posters-grid')
+var html = "";
+for (var i = 0; i < savedPosters.length; i++) {
+  var savedPoster = savedPosters[i];
+  html +=
+  `
+  <section class=mini-poster id=miniposter${savedPoster.id}>
+    <img class="poster-img" src="${savedPoster.imageURL}">
+    <h1 class="poster-title">${savedPoster.title}</h1>
+    <h3 class="poster-quote">${savedPoster.quote}</h3>
+  </section>
+`
+  }
+ savedPostersGrid.innerHTML = html;
+}
+
+//saves each mini-poster section as new element in array
+//adds event listener for the mini-poster with anonymous function to insulate
+//deleteSavedPoster handler
+function addDeleteFunctionalityToMiniPosters() {
+  var miniPosters = [];
+  for (var i = 0; i < savedPosters.length; i++) {
+    var savedPoster = savedPosters[i];
+    miniPosters.push(document.querySelector('#miniposter' + savedPoster.id));
+    var miniPoster = miniPosters[i];
+    miniPoster.addEventListener('dblclick', function() {
+      deleteSavedPoster(miniPoster, i)
+    })
   }
 }
 
-function saveMainPoster() {
-  var mainPoster = new Poster(image.src, title.innerText, quote.innerText);
-  if(!testForDuplicate(savedPosters, mainPoster)) {
-  savedPosters.push(mainPoster);
-  savedPostersGrid.innerHTML += `
-  <section class=mini-poster>
-    <img class="poster-img" src="${mainPoster.imageURL}">
-    <h1 class="poster-title">${mainPoster.title}</h1>
-    <h3 class="poster-quote">${mainPoster.quote}</h3>
-  </section>
-  `
-  }
-}
+//~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~~
+
+//need random poster to be generated and displayed when page loads
+showAnotherRandomPoster();
+
+//mainPoster is displayed and other two pages are hidden when page loads
+savedPostersPage.style.display = "none"
+posterForm.style.display = "none"
