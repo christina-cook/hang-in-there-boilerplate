@@ -15,9 +15,9 @@
 
 ## Instructions
 
-- Upon opening the webpage, a motivational poster is randomly displayed.
+- Upon opening the app, a motivational poster is randomly displayed.
 
-- From the main page, you have the option to either create a custom poster or generate a new random poster.
+- From the main page, you have the option to either create your own custom poster or generate another random poster.
 
 ![Screenshot of homepage](/readme-imgs/kelly-christina/homepage-main.png)
 
@@ -35,7 +35,7 @@
 
 ### Saving Your Poster
 
-- On the main page, you have the option to save your poster. To save your poster, hit `Save This Poster`.
+- On the main page, you have the option to save your poster. To save your poster, click `Save This Poster`.
 
 ![Screenshot of homepage with Save This Poster button highlighted](/readme-imgs/kelly-christina/save-poster.png)
 
@@ -67,4 +67,6 @@
 
 - Navigate back to the poster grid by clicking `Show Saved Posters` from the main page.
 
-- From here, double click the mini poster you'd like to delete and voila - the mini poster has been removed from the page.
+![Screenshot of homepage with Show Saved Posters button highlighted](/readme-imgs/kelly-christina/show-saved.png)
+
+- From here, double click the mini poster you'd like to delete and that mini poster has been removed from the page.
