@@ -57,6 +57,7 @@
 
 - If you’d like to save one of the random posters displayed on the main page, click `Save This Poster`. You can then click `Show Saved Posters` to see all the posters you have saved so far.
 
+![Screenshot of homepage with Show Saved Posters button highlighted](/readme-imgs/kelly-christina/show-saved.png)
 ![Screenshot of grid with multiple posters](/readme-imgs/kelly-christina/poster-grid.png)
 
 - Click `Back to Main` to return to the main page.
@@ -66,7 +67,5 @@
 - You have the option to delete one of your saved posters.
 
 - Navigate back to the poster grid by clicking `Show Saved Posters` from the main page.
-
-![Screenshot of homepage with Show Saved Posters button highlighted](/readme-imgs/kelly-christina/show-saved.png)
 
 - From here, double click the mini poster you'd like to delete and that mini poster has been removed from the page.
