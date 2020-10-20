@@ -185,7 +185,7 @@ function saveCurrentPoster() {
 }
 
 function deleteMiniPoster() {
-  removeMiniPosterFromSavedPosters(event.target);
+  removeSelectedPosterFromSavedPosters(event.target);
   updateGridDisplay();
 }
 
@@ -285,9 +285,9 @@ for (var i = 0; i < savedPosters.length; i++) {
   html +=
   `
   <section class="mini-poster" id=miniposter${savedPoster.id}>
-    <img class="poster-img" src="${savedPoster.imageURL}">
-    <h1 class="poster-title">${savedPoster.title}</h1>
-    <h3 class="poster-quote">${savedPoster.quote}</h3>
+    <img class="poster-img mini-poster-child" src="${savedPoster.imageURL}">
+    <h1 class="poster-title mini-poster-child">${savedPoster.title}</h1>
+    <h3 class="poster-quote mini-poster-child">${savedPoster.quote}</h3>
   </section>
 `
   }
@@ -295,16 +295,16 @@ for (var i = 0; i < savedPosters.length; i++) {
 }
 
 
-function removeMiniPosterFromSavedPosters(element) {
+function removeSelectedPosterFromSavedPosters(targetOfDoubleClick) {
     for (var i = 0; i < savedPosters.length; i++) {
-    if (element.className === 'mini-poster' && element.id === `miniposter${savedPosters[i].id}`) {
-      savedPosters.splice(i, 1)
-    } else if (element.className === 'poster-img' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
-      savedPosters.splice(i, 1)
-    } else if (element.className === 'poster-title' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
-      savedPosters.splice(i, 1)
-    } else if (element.className === 'poster-quote' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
-      savedPosters.splice(i, 1)
-    }
-  }
+      var miniPosterID = `miniposter${savedPosters[i].id}`;
+      var targetParent = targetOfDoubleClick.parentNode;
+      if (checkClassAndID(targetOfDoubleClick, miniPosterID) || checkClassAndID(targetParent, miniPosterID)) {
+        savedPosters.splice(i, 1)
+      }
+   }
+}
+
+function checkClassAndID(element, id) {
+  return element.classList.contains('mini-poster') && element.id === id;
 }
