@@ -1,28 +1,21 @@
-//~~~~~~~~~~~~~~~~~~~~~~~~QUERY SELECTOR VARIABLES 👇~~~~~~~~~~~~~~~~~~~~~~~~
 
-  //poster attributes
 var title = document.querySelector('.poster-title')
 var quote = document.querySelector('.poster-quote')
 var image = document.querySelector('img')
 
-
-  //pages
 var posterForm = document.querySelector('.poster-form')
 var savedPostersPage = document.querySelector('.saved-posters')
 var mainPoster = document.querySelector('.main-poster')
 var savedPostersGrid = document.querySelector('.saved-posters-grid')
 
-  //buttons
-var showFormButton = document.querySelector('.show-form')
+var makePosterButton = document.querySelector('.show-form')
 var showSavedButton = document.querySelector('.show-saved')
-var showMainButton = document.querySelector('.show-main')
+var nevermindButton = document.querySelector('.show-main')
 var backToMainButton = document.querySelector('.back-to-main')
 var showMyPosterButton = document.querySelector('.make-poster')
 var saveThisPosterButton = document.querySelector('.save-poster')
 var showAnotherRandomPosterButton = document.querySelector('.show-random')
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~DATA 👇~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var images = [
   "./assets/bees.jpg",
@@ -123,32 +116,28 @@ var quotes = [
 ];
 
 var savedPosters = [];
-
 var currentPoster = {};
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~EVENT LISTENERS👇~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 window.addEventListener('load', showAnotherRandomPoster);
 showAnotherRandomPosterButton.addEventListener('click', showAnotherRandomPoster);
-showFormButton.addEventListener('click', openForm);
+makePosterButton.addEventListener('click', openForm);
 showSavedButton.addEventListener('click', openSavedPosters);
-showMainButton.addEventListener('click', showMainPoster);
+nevermindButton.addEventListener('click', showMainPoster);
 backToMainButton.addEventListener('click', returnToMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
 saveThisPosterButton.addEventListener('click', saveCurrentPoster);
 savedPostersGrid.addEventListener('dblclick', function(event) {
   deleteMiniPoster()
-})
+});
 
-//~~~~~~~~~~~~~~~~~~~EVENT HANDLERS/HELPERS 👇~~~~~~~~~~~~~~~~~~~~~
 
-//handler for showAnotherRandomPosterButton
 function showAnotherRandomPoster() {
   randomizePropertiesOfCurrentPoster();
   displayCurrentPoster();
 }
 
-//hander for showMyPosterButton
+
 function showMyPoster() {
   storeCustomPosterAsCurrentPoster();
   savePropertiesForFutureRandomPosters();
@@ -156,26 +145,27 @@ function showMyPoster() {
   displayCurrentPoster();
 }
 
-//handler for showFormButton
+
 function openForm() {
   switchPages(posterForm, mainPoster);
 }
 
-//handler for showSavedButton
+
 function openSavedPosters() {
   switchPages(savedPostersPage, mainPoster);
 }
 
-//handler for showMainButton and backToMainButton
+
 function returnToMainPoster() {
   switchPages(mainPoster, savedPostersPage)
 }
+
 
 function showMainPoster() {
   switchPages(mainPoster, posterForm)
 }
 
-//handler for saveThisPosterButton
+
 function saveCurrentPoster() {
   var newPoster = new Poster(currentPoster.imageURL, currentPoster.title, currentPoster.quote);
   if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
@@ -184,42 +174,32 @@ function saveCurrentPoster() {
   }
 }
 
+
 function deleteMiniPoster() {
   removeSelectedPosterFromSavedPosters(event.target);
   updateGridDisplay();
 }
 
 
-
-
-//~~~~~~~~~~~~~~~~~~~FUNCTIONS CALLED INSIDE EVENT HANDLERS 👇~~~~~~~~~~~~~~~~~~~~~~~
-
-//updates HTML for mainPoster based on data model stored in currentPoster
-//called in helper handlers for showAnotherRandomPosterButton and showMyPosterButton
 function displayCurrentPoster() {
   title.innerText = currentPoster.title;
   quote.innerText = currentPoster.quote;
   image.src = currentPoster.imageURL;
 }
 
-//updates data model, as stored in currentPoster object,
-//with randomly selected values from images, titles, and quotes arrays
-//called in helper handler for showAnotherRandomPosterButton
+
 function randomizePropertiesOfCurrentPoster() {
   currentPoster.imageURL = images[getRandomIndex(images)];
   currentPoster.title = titles[getRandomIndex(titles)];
   currentPoster.quote = quotes[getRandomIndex(quotes)];
 }
 
-//gets random index
-//called in randomizePropertiesOfCurrentPoster() to choose random image, title, and quote
+
 function getRandomIndex(array) {
   return Math.floor(Math.random() * array.length);
 }
 
-//updates data model, as stored in currentPoster object,
-//with custom inputs from form
-//called inside helper handler for showMyPosterButton
+
 function storeCustomPosterAsCurrentPoster() {
   var inputImage = document.querySelector('#poster-image-url').value
   var inputTitle = document.querySelector('#poster-title').value
@@ -229,9 +209,7 @@ function storeCustomPosterAsCurrentPoster() {
   currentPoster.quote = inputQuote;
 }
 
-//saves currentPoster properties to titles, quotes, and images arrays
-//to be used as values in future random posters
-//called inside helper handler for showMyPosterButton
+
 function savePropertiesForFutureRandomPosters() {
   images.push(currentPoster.imageURL);
   titles.push(currentPoster.title);
@@ -239,71 +217,55 @@ function savePropertiesForFutureRandomPosters() {
 }
 
 
-//takes destination and starting page as arguments
-//shows the former and hides the latter
-//called in helper handlers for
-//showFormButton, showSavedButton, showMainButton, and backToMainButton
-//**may want to toggle "hidden" class instead***
-// function switchPages(pageToOpen, pageToHideOne, pageToHideTwo) {
-//   // pageToOpen.style.display = "block";
-//   // pageToHideOne.style.display = "none";
-//   // pageToHideTwo.style.display = "none";
-// }
-
 function switchPages(pageToOpen, pageToHide) {
   pageToOpen.classList.toggle('hidden')
   pageToHide.classList.toggle('hidden')
 }
 
-//compares poster to every poster in array and returns true if there is a match
-//called in helper handler for saveThisPosterButton,
-//which only saves a poster to data model (savePosters array) and savedPostersGrid
-//if the poster is not a duplicate of previously saved poster
+
 function testIfAnyPosterIsAMatch(arrayOfPosters, mainPoster) {
   for(var i = 0; i < arrayOfPosters.length; i++) {
     if (testIfPostersMatch(arrayOfPosters[i], mainPoster)) {
           return true;
-        }
-      }
     }
+  }
+}
 
-//compares two posters and returns true if they share all values
-//called in testIfAnyPosterIsAMatch() for each item in arrayOfPosters
+
 function testIfPostersMatch(posterOne, posterTwo) {
-    return posterOne.imageURL === posterTwo.imageURL &&
+  return posterOne.imageURL === posterTwo.imageURL &&
     posterOne.title === posterTwo.title &&
     posterOne.quote === posterTwo.quote
-  }
+}
 
 
-//loops through savedPosters array and adds mini-poster element to savedPostersGrid
-//for each element in the array
 function updateGridDisplay() {
-var html = "";
-for (var i = 0; i < savedPosters.length; i++) {
-  var savedPoster = savedPosters[i];
-  html +=
-  `
-  <section class="mini-poster" id=miniposter${savedPoster.id}>
-    <img class="poster-img mini-poster-child" src="${savedPoster.imageURL}">
-    <h1 class="poster-title mini-poster-child">${savedPoster.title}</h1>
-    <h3 class="poster-quote mini-poster-child">${savedPoster.quote}</h3>
-  </section>
-`
+  var html = "";
+  for (var i = 0; i < savedPosters.length; i++) {
+    var savedPoster = savedPosters[i];
+    html +=
+    `
+    <section class="mini-poster" id=miniposter${savedPoster.id}>
+      <img class="poster-img" src="${savedPoster.imageURL}">
+      <h1 class="poster-title">${savedPoster.title}</h1>
+      <h3 class="poster-quote">${savedPoster.quote}</h3>
+    </section>
+    `
   }
  savedPostersGrid.innerHTML = html;
 }
 
 
 function removeSelectedPosterFromSavedPosters(targetOfDoubleClick) {
-    for (var i = 0; i < savedPosters.length; i++) {
-      var miniPosterID = `miniposter${savedPosters[i].id}`;
-      var targetParent = targetOfDoubleClick.parentNode;
-      if (checkClassAndID(targetOfDoubleClick, miniPosterID) || checkClassAndID(targetParent, miniPosterID)) {
+  for (var i = 0; i < savedPosters.length; i++) {
+    var miniPosterID = `miniposter${savedPosters[i].id}`;
+    var targetParent = targetOfDoubleClick.parentNode;
+    if (checkClassAndID(targetOfDoubleClick, miniPosterID) || checkClassAndID(targetParent, miniPosterID)) {
         savedPosters.splice(i, 1)
-      }
-   }
+    }
+  }
 }
+
 
 function checkClassAndID(element, id) {
   return element.classList.contains('mini-poster') && element.id === id;
