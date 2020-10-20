@@ -5,15 +5,12 @@ var title = document.querySelector('.poster-title')
 var quote = document.querySelector('.poster-quote')
 var image = document.querySelector('img')
 
-//should the rest of these variables (pages and buttons) be global, or
-//should they be defined within the event handlers/within an object or class?
-//How do we minimize global variables when these variables need to be defined prior to
-//adding event listeners, and even listeners can't be added from within their own handlers?
 
   //pages
 var posterForm = document.querySelector('.poster-form')
 var savedPostersPage = document.querySelector('.saved-posters')
 var mainPoster = document.querySelector('.main-poster')
+var savedPostersGrid = document.querySelector('.saved-posters-grid')
 
   //buttons
 var showFormButton = document.querySelector('.show-form')
@@ -138,7 +135,9 @@ showMainButton.addEventListener('click', openMainPoster);
 backToMainButton.addEventListener('click', openMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
 saveThisPosterButton.addEventListener('click', saveCurrentPoster);
-
+savedPostersGrid.addEventListener('dblclick', function(event) {
+  deleteMiniPoster(event.target)
+})
 
 //~~~~~~~~~~~~~~~~~~~EVENT HANDLERS/HELPERS 👇~~~~~~~~~~~~~~~~~~~~~
 
@@ -177,16 +176,16 @@ function saveCurrentPoster() {
   if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
   savedPosters.push(newPoster);
   addMiniPostersToGrid();
-  identifyMiniPosters();
+  //addDeleteFunctionalityToMiniPosters();
   }
 }
 
-function deleteSavedPoster(miniPoster, index) {
-  savedPosters.splice(savedPosters[index]);
-  miniPoster.remove;
-  addMiniPostersToGrid();
-  identifyMiniPosters();
-}
+// function deleteSavedPoster(miniPoster, index) {
+//   savedPosters.splice(savedPosters[index]);
+//   miniPoster.remove;
+//   addMiniPostersToGrid();
+//   addDeleteFunctionalityToMiniPosters();
+// }
 
 
 //~~~~~~~~~~~~~~~~~~~FUNCTIONS CALLED INSIDE EVENT HANDLERS 👇~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,14 +269,13 @@ function testIfPostersMatch(posterOne, posterTwo) {
 
 //loops through savedPosters array and adds mini-poster element to savedPostersGrid
 //for each element in the array
-function addMiniPostersToGrid(html) {
-  var savedPostersGrid = document.querySelector('.saved-posters-grid')
+function addMiniPostersToGrid() {
 var html = "";
 for (var i = 0; i < savedPosters.length; i++) {
   var savedPoster = savedPosters[i];
   html +=
   `
-  <section class=mini-poster id=miniposter${savedPoster.id}>
+  <section class="mini-poster" id=miniposter${savedPoster.id}>
     <img class="poster-img" src="${savedPoster.imageURL}">
     <h1 class="poster-title">${savedPoster.title}</h1>
     <h3 class="poster-quote">${savedPoster.quote}</h3>
@@ -287,22 +285,25 @@ for (var i = 0; i < savedPosters.length; i++) {
  savedPostersGrid.innerHTML = html;
 }
 
-//saves each mini-poster section as new element in array
-//adds event listener for the mini-poster with anonymous function to insulate
-//deleteSavedPoster handler
-function addDeleteFunctionalityToMiniPosters() {
-  var miniPosters = [];
-  for (var i = 0; i < savedPosters.length; i++) {
-    var savedPoster = savedPosters[i];
-    miniPosters.push(document.querySelector('#miniposter' + savedPoster.id));
-    var miniPoster = miniPosters[i];
-    miniPoster.addEventListener('dblclick', function() {
-      deleteSavedPoster(miniPoster, i)
-    })
+
+function deleteMiniPosterFromGrid(element) {
+  if (element.className === 'mini-poster') {
+  element.remove()
+  } else if (element.className === 'poster-img') {
+  element.parentNode.remove()
+  } else if (element.className === 'poster-title') {
+  element.parentNode.remove()
+  } else if (element.className === 'poster-quote') {
+  element.parentNode.remove()
   }
 }
 
-//~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~~
+
+function removeMiniPosterFromSavedPosters(element) {
+
+}
+
+//~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~
 
 //need random poster to be generated and displayed when page loads
 showAnotherRandomPoster();
