@@ -1,79 +1,70 @@
-# Hang In There
+# Project: Hang In There
 
-A boilerplate repo. 
+**Contributors:**
 
-## Set Up
+- Christina Cook
+- Kelly Dinneen
 
-1. One teammate: fork this repository
-2. Go to settings and turn on GitHub Pages for this repository
-3. All teammates: clone down this repository
-4. `cd` into the repository
-5. Run `open index.html` to view it in the browser
+**Technologies Used:**
 
-## Progression
+- HTML
+- CSS
+- JavaScript
 
-### Iteration 0 - Main Page
+**Deploy Link:** [https://kellydinneen.github.io/hang-in-there-boilerplate/](https://kellydinneen.github.io/hang-in-there-boilerplate/)
 
-![screenshot of main page showing poster](/readme-imgs/homepage.png)
+## Instructions
 
-- When the page loads, we should see a poster with a randomly selected image, title, and quote
+- Upon opening the webpage, a motivational poster is randomly displayed.
 
-### Iteration 1 - Switching Views
+- From the main page, you have the option to either create a custom poster or generate a new random poster.
 
-Form page:
-![screenshot of form](/readme-imgs/form.png)
+![Screenshot of homepage](/readme-imgs/kelly-christina/homepage-main.png)
 
-Saved posters page (once working with extra saved posters):
-![screenshot of saved posters page](/readme-imgs/saved.png)
+### Making Your Own Poster
 
-- When a user clicks the "Make Your Own Poster" button, we should see the form, and the main poster should be hidden
-- When a user clicks the "View Saved Posters" button, we should see the saved posters area, and the main poster should be hidden
-- When a user clicks the "Nevermind, take me back!" or "Back to Main" buttons, we should only see the main poster section
-- In summary: Be able to switch between the three views (main poster, form, and saved posters) on the correct button clicks
+- To make your own custom poster, click `Make Your Own Poster`.
 
-_Hint: go check out the HTML and CSS files to see how the form and saved posters sections are being hidden in the first place_
+- You will see a form displayed on the page. From here, you have two options, either fill out the form to create a custom poster or click `Nevermind, take me back!` to return to the main page.
 
-## Iteration 2 - Creating a New Poster
+- To fill out the form, simply copy and paste an image's url into the first box, then type your own title and quote in the next two boxes.
 
-Form being filled out:
-![screenshot of form](/readme-imgs/form.png)
+![Screenshot of form with text](/readme-imgs/kelly-christina/form-with-text.png)
 
-Once poster is saved:
-![screenshot of result](/readme-imgs/form-result.png)
+- Once the form is filled out, click the `Show my poster` button. You will be taken back to the main page where you will see your poster displayed.
 
-- On the new poster form view, users should be able to fill out the three input fields and then hit the save button
-- When the save button is clicked, several things will happen:
-  - Save the submitted data into the respective arrays (image URL into the images array, etc) so that future random posters can use the user-created data
-  - Use the values from the inputs to create a new instance of our Poster class
-  - Change back to the main poster view (hiding the form view again)
-  - Display the newly created poster image, title, and quote in the main view
+### Saving Your Poster
 
-## Iteration 3 - Saving & Viewing Posters
+- On the main page, you have the option to save your poster. To save your poster, hit `Save This Poster`.
 
-Saved posters view:
-![screenshot of saved posters section](/readme-imgs/saved.png)
+![Screenshot of homepage with Save This Poster button highlighted](/readme-imgs/kelly-christina/save-poster.png)
 
-- When a user clicks the "Save This Poster" button, the current main poster will be added to the `savedPosters` array.
-- If a user clicks the "Save This Poster" more than once on a single poster, it will still only be saved once (no duplicates)
-- When a user clicks the "Show Saved Posters" button, we should see the saved posters section
-- All the posters in the `savedPosters` array should be displayed in the saved posters grid section
+- You can then click on `Show Saved Posters` to see your saved poster on a new page.
 
-## Iteration 4 - Deleting Saved Posters
+![Screenshot of grid](/readme-imgs/kelly-christina/saved-posters.png)
 
-- From the saved posters view, if a user double clicks a saved poster, it will be deleted
+- This page displays a grid with mini versions of your saved posters.
 
-_Hint: How will you update the data model to achieve this?_
+- Click the `Back to Main` button to return to the main page.
 
-## Optional Extensions - Gettin' fancy
+### Generating a Random Poster
 
-Here's a list of possible extensions to implement - but **ONLY IF** your team has completed all the previous iterations **AND** have cleaned up your code to make it DRYer and more readable.
+- To generate another random poster on the main page, simply click `Show Another Random Poster`. You can continue to click this button and a new random poster will be displayed each time.
 
-You are welcome to add your own extensions. Be sure they are thoughtful in terms of UX/UI, and that they do not break any prior functionality.
+![Screenshot of grid with multiple posters](/readme-imgs/kelly-christina/random-poster.png)
 
-- Implement data validation and error handling into the form (disable button, provide error messages if data entered is not correct, etc)
-- In the main poster view, allow users to click each piece of the poster (image, title, quote) to update just that piece with another random item from the appropriate array
-- When a user single clicks a saved poster, create a modal to view it larger
-- Allow users to drag and drop saved posters into whatever order they want them to appear
+### Saving a Random Poster
 
+- If you’d like to save one of the random posters displayed on the main page, click `Save This Poster`. You can then click `Show Saved Posters` to see all the posters you have saved so far.
 
-Project spec & rubric can be found [here](https://frontend.turing.io/projects/module-1/hang-in-there.html)
+![Screenshot of grid with multiple posters](/readme-imgs/kelly-christina/poster-grid.png)
+
+- Click `Back to Main` to return to the main page.
+
+### Deleting a Saved Poster
+
+- You have the option to delete one of your saved posters.
+
+- Navigate back to the poster grid by clicking `Show Saved Posters` from the main page.
+
+- From here, double click the mini poster you'd like to delete and voila - the mini poster has been removed from the page.
