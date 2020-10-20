@@ -136,7 +136,7 @@ backToMainButton.addEventListener('click', openMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
 saveThisPosterButton.addEventListener('click', saveCurrentPoster);
 savedPostersGrid.addEventListener('dblclick', function(event) {
-  deleteMiniPoster(event.target)
+  deleteMiniPoster()
 })
 
 //~~~~~~~~~~~~~~~~~~~EVENT HANDLERS/HELPERS 👇~~~~~~~~~~~~~~~~~~~~~
@@ -175,17 +175,17 @@ function saveCurrentPoster() {
   var newPoster = new Poster(currentPoster.imageURL, currentPoster.title, currentPoster.quote);
   if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
   savedPosters.push(newPoster);
-  addMiniPostersToGrid();
+  updateGridDisplay();
   //addDeleteFunctionalityToMiniPosters();
   }
 }
 
-// function deleteSavedPoster(miniPoster, index) {
-//   savedPosters.splice(savedPosters[index]);
-//   miniPoster.remove;
-//   addMiniPostersToGrid();
-//   addDeleteFunctionalityToMiniPosters();
-// }
+function deleteMiniPoster() {
+  removeMiniPosterFromSavedPosters(event.target);
+  updateGridDisplay();
+}
+
+
 
 
 //~~~~~~~~~~~~~~~~~~~FUNCTIONS CALLED INSIDE EVENT HANDLERS 👇~~~~~~~~~~~~~~~~~~~~~~~
@@ -269,7 +269,7 @@ function testIfPostersMatch(posterOne, posterTwo) {
 
 //loops through savedPosters array and adds mini-poster element to savedPostersGrid
 //for each element in the array
-function addMiniPostersToGrid() {
+function updateGridDisplay() {
 var html = "";
 for (var i = 0; i < savedPosters.length; i++) {
   var savedPoster = savedPosters[i];
@@ -286,22 +286,20 @@ for (var i = 0; i < savedPosters.length; i++) {
 }
 
 
-function deleteMiniPosterFromGrid(element) {
-  if (element.className === 'mini-poster') {
-  element.remove()
-  } else if (element.className === 'poster-img') {
-  element.parentNode.remove()
-  } else if (element.className === 'poster-title') {
-  element.parentNode.remove()
-  } else if (element.className === 'poster-quote') {
-  element.parentNode.remove()
+function removeMiniPosterFromSavedPosters(element) {
+    for (var i = 0; i < savedPosters.length; i++) {
+    if (element.className === 'mini-poster' && element.id === `miniposter${savedPosters[i].id}`) {
+      savedPosters.splice(i, 1)
+    } else if (element.className === 'poster-img' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
+      savedPosters.splice(i, 1)
+    } else if (element.className === 'poster-title' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
+      savedPosters.splice(i, 1)
+    } else if (element.className === 'poster-quote' && element.parentNode.id === `miniposter${savedPosters[i].id}`) {
+      savedPosters.splice(i, 1)
+    }
   }
 }
 
-
-function removeMiniPosterFromSavedPosters(element) {
-
-}
 
 //~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~
 
