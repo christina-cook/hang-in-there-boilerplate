@@ -128,11 +128,12 @@ var currentPoster = {};
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~EVENT LISTENERS👇~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+window.addEventListener('load', showAnotherRandomPoster);
 showAnotherRandomPosterButton.addEventListener('click', showAnotherRandomPoster);
 showFormButton.addEventListener('click', openForm);
 showSavedButton.addEventListener('click', openSavedPosters);
-showMainButton.addEventListener('click', openMainPoster);
-backToMainButton.addEventListener('click', openMainPoster);
+showMainButton.addEventListener('click', showMainPoster);
+backToMainButton.addEventListener('click', returnToMainPoster);
 showMyPosterButton.addEventListener('click', showMyPoster);
 saveThisPosterButton.addEventListener('click', saveCurrentPoster);
 savedPostersGrid.addEventListener('dblclick', function(event) {
@@ -151,23 +152,27 @@ function showAnotherRandomPoster() {
 function showMyPoster() {
   storeCustomPosterAsCurrentPoster();
   savePropertiesForFutureRandomPosters();
-  openMainPoster();
+  showMainPoster();
   displayCurrentPoster();
 }
 
 //handler for showFormButton
 function openForm() {
-  switchPages(posterForm, mainPoster, savedPostersPage);
+  switchPages(posterForm, mainPoster);
 }
 
 //handler for showSavedButton
 function openSavedPosters() {
-  switchPages(savedPostersPage, mainPoster, posterForm);
+  switchPages(savedPostersPage, mainPoster);
 }
 
 //handler for showMainButton and backToMainButton
-function openMainPoster() {
-  switchPages(mainPoster, savedPostersPage, posterForm)
+function returnToMainPoster() {
+  switchPages(mainPoster, savedPostersPage)
+}
+
+function showMainPoster() {
+  switchPages(mainPoster, posterForm)
 }
 
 //handler for saveThisPosterButton
@@ -176,7 +181,6 @@ function saveCurrentPoster() {
   if(!testIfAnyPosterIsAMatch(savedPosters, newPoster)) {
   savedPosters.push(newPoster);
   updateGridDisplay();
-  //addDeleteFunctionalityToMiniPosters();
   }
 }
 
@@ -240,10 +244,15 @@ function savePropertiesForFutureRandomPosters() {
 //called in helper handlers for
 //showFormButton, showSavedButton, showMainButton, and backToMainButton
 //**may want to toggle "hidden" class instead***
-function switchPages(pageToOpen, pageToHideOne, pageToHideTwo) {
-  pageToOpen.style.display = "block";
-  pageToHideOne.style.display = "none";
-  pageToHideTwo.style.display = "none";
+// function switchPages(pageToOpen, pageToHideOne, pageToHideTwo) {
+//   // pageToOpen.style.display = "block";
+//   // pageToHideOne.style.display = "none";
+//   // pageToHideTwo.style.display = "none";
+// }
+
+function switchPages(pageToOpen, pageToHide) {
+  pageToOpen.classList.toggle('hidden')
+  pageToHide.classList.toggle('hidden')
 }
 
 //compares poster to every poster in array and returns true if there is a match
@@ -299,13 +308,3 @@ function removeMiniPosterFromSavedPosters(element) {
     }
   }
 }
-
-
-//~~~~~~~~~~~~~~~~~~~DEFAULT SETTINGS ON PAGE LOAD 👇~~~~~~~~~~~~~~~~~~~~~~
-
-//need random poster to be generated and displayed when page loads
-showAnotherRandomPoster();
-
-//mainPoster is displayed and other two pages are hidden when page loads
-savedPostersPage.style.display = "none"
-posterForm.style.display = "none"
