@@ -68,4 +68,4 @@
 
 - Navigate back to the poster grid by clicking `Show Saved Posters` from the main page.
 
-- From here, double click the mini poster you'd like to delete and that mini poster has been removed from the page.
+- From here, double click the mini poster you'd like to delete and it will be removed from the page.
